@@ -48,7 +48,7 @@ class CasaScraper(BaseScraper):
         )
 
         # Fetch multiple pages from Milan overall (zone filtering done in normalize())
-        for page in range(1, 11):
+        for page in range(1, 26):
             url = f"{BASE_URL}/vendita/residenziale/milano/{base_params}&page={page}"
             print(f"[casa] Page {page}: {url}")
 

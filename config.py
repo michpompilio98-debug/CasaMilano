@@ -15,11 +15,30 @@ SEARCH_CRITERIA = {
 
 # Zone keywords for matching listings (broader set for fuzzy matching)
 ZONE_KEYWORDS = {
-    "Porta Romana": ["porta romana", "porta_romana", "corso di porta romana", "viale beatrice d'este", "viale bligny"],
-    "Bocconi": ["bocconi", "viale isonzo", "corso lodi", "via bocconi", "viale ortles", "via col di lana", "piazzale medaglie d'oro"],
-    "Fondazione Prada": ["fondazione prada", "largo isarco", "via isarco", "viale ortles", "via pestalozzi", "piazza lodi"],
-    "Ripamonti": ["ripamonti", "via ripamonti", "vigentino", "fatima", "bernardino verro", "ramusio"],
-    "Cermenate": ["cermenate", "via cermenate", "brenta", "via brenta", "corvetto", "piazzale corvetto"],
+    "Porta Romana": [
+        "porta romana", "corso di porta romana", "viale bligny",
+        "viale beatrice d'este", "via marcona", "via cadore", "viale piceno",
+        "via muratori", "via tiraboschi", "piazzale medaglie d'oro",
+    ],
+    "Bocconi": [
+        "bocconi", "viale isonzo", "corso lodi", "via bocconi",
+        "via col di lana", "via montemartini", "viale caldara",
+        "via tabacchi", "piazza xxiv maggio", "via vigevano",
+    ],
+    "Fondazione Prada": [
+        "fondazione prada", "largo isarco", "via isarco", "via pestalozzi",
+        "piazza lodi", "viale ortles", "via lorenzini", "via brembo",
+    ],
+    "Ripamonti": [
+        "ripamonti", "vigentino", "fatima", "bernardino verro", "ramusio",
+        "via chiaradia", "piazza chiaradia", "via selvanesco", "via quaranta",
+        "via noto", "via montegani", "via pompeo leoni",
+    ],
+    "Cermenate": [
+        "cermenate", "corvetto", "piazzale corvetto", "via brenta",
+        "via oglio", "via adda", "via arno", "via mincio",
+        "via monti sabini", "via casoretto",
+    ],
 }
 
 # Scraping schedule (every 4 hours)

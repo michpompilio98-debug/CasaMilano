@@ -34,8 +34,8 @@ include_unknown_year = st.sidebar.checkbox("Includi anno sconosciuto", value=Tru
 
 sources = st.sidebar.multiselect(
     "Fonti",
-    ["casa", "immobiliare", "idealista", "subito"],
-    default=["casa", "immobiliare", "idealista", "subito"],
+    ["casa", "gabetti", "immobiliare", "idealista", "subito"],
+    default=["casa", "gabetti", "immobiliare", "idealista", "subito"],
 )
 
 only_new = st.sidebar.checkbox("Solo nuovi annunci", value=False)

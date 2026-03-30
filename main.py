@@ -19,12 +19,14 @@ def run_scrapers(source_filter: str | None = None):
     from scrapers.idealista import IdealistaScraper
     from scrapers.subito import SubitoScraper
     from scrapers.casa import CasaScraper
+    from scrapers.gabetti import GabettiScraper
 
     scrapers = {
         "immobiliare": ImmobiliareScraper(),
         "idealista": IdealistaScraper(),
         "subito": SubitoScraper(),
         "casa": CasaScraper(),
+        "gabetti": GabettiScraper(),
     }
 
     if source_filter:
