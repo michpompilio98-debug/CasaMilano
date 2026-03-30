@@ -218,7 +218,8 @@ def get_listings(
         if max_rooms:
             q = q.lte("rooms", max_rooms)
         if min_year:
-            q = q.gte("year_built", min_year)
+            # Include listings where year_built >= min_year OR year_built is NULL
+            q = q.or_(f"year_built.gte.{min_year},year_built.is.null")
         if only_new:
             q = q.eq("is_new", 1)
         if source:
