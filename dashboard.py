@@ -11,27 +11,7 @@ st.set_page_config(
     layout="wide",
 )
 
-try:
-    sb_secrets = dict(st.secrets.get("supabase", {}))
-    st.write("DEBUG secrets:", list(sb_secrets.keys()))
-except Exception as e:
-    st.write("DEBUG secrets error:", str(e))
-
 init_db()
-
-import db as _db
-st.write("DEBUG backend:", "Supabase" if _db._USE_SUPABASE else "SQLite")
-
-# Test direct query
-try:
-    all_rows = _db.get_listings()
-    st.write("DEBUG total listings (no filter):", len(all_rows))
-    if all_rows:
-        from collections import Counter
-        zones_count = Counter(r.get("zone") for r in all_rows)
-        st.write("DEBUG zones:", dict(zones_count))
-except Exception as e:
-    st.write("DEBUG get_listings error:", str(e))
 
 # ── Sidebar filters ──────────────────────────────────────────────────────────
 st.sidebar.title("Filtri")
@@ -53,8 +33,8 @@ min_year = st.sidebar.number_input("Anno costruzione minimo", 2000, 2025, 2015)
 
 sources = st.sidebar.multiselect(
     "Fonti",
-    ["immobiliare", "idealista", "subito"],
-    default=["immobiliare", "idealista", "subito"],
+    ["casa", "immobiliare", "idealista", "subito"],
+    default=["casa", "immobiliare", "idealista", "subito"],
 )
 
 only_new = st.sidebar.checkbox("Solo nuovi annunci", value=False)
