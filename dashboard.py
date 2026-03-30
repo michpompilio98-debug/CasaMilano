@@ -13,6 +13,15 @@ st.set_page_config(
 
 init_db()
 
+# ── Debug (temporary) ─────────────────────────────────────────────────────────
+import db as _db
+st.sidebar.caption(f"Backend: {'Supabase' if _db._USE_SUPABASE else 'SQLite'}")
+try:
+    sb_keys = list(st.secrets.get("supabase", {}).keys())
+    st.sidebar.caption(f"Secrets keys: {sb_keys}")
+except Exception as e:
+    st.sidebar.caption(f"Secrets error: {e}")
+
 # ── Sidebar filters ──────────────────────────────────────────────────────────
 st.sidebar.title("Filtri")
 
