@@ -139,8 +139,8 @@ st.divider()
 st.subheader(f"Annunci ({len(df)})")
 
 display_df = df[[
-    "source", "zone", "title", "price", "sqm", "price_per_sqm",
-    "rooms", "address", "year_built", "floor", "energy_class", "url", "first_seen", "is_new"
+    "is_new", "zone", "title", "price", "sqm", "price_per_sqm",
+    "rooms", "year_built", "floor", "energy_class", "address", "url", "first_seen"
 ]].copy()
 
 display_df["price"] = display_df["price"].apply(
@@ -152,14 +152,17 @@ display_df["price_per_sqm"] = display_df["price_per_sqm"].apply(
 display_df["sqm"] = display_df["sqm"].apply(
     lambda x: f"{int(x)} m²" if pd.notna(x) else "—"
 )
+display_df["year_built"] = display_df["year_built"].apply(
+    lambda x: str(int(x)) if pd.notna(x) else "—"
+)
 display_df["is_new"] = display_df["is_new"].apply(lambda x: "🆕" if x else "")
 
 display_df = display_df.rename(columns={
-    "source": "Fonte", "zone": "Zona", "title": "Titolo",
+    "is_new": "", "zone": "Zona", "title": "Titolo",
     "price": "Prezzo", "sqm": "m²", "price_per_sqm": "€/m²",
-    "rooms": "Locali", "address": "Indirizzo", "year_built": "Anno",
-    "floor": "Piano", "energy_class": "Classe E.", "url": "Link",
-    "first_seen": "Visto il", "is_new": "Nuovo",
+    "rooms": "Locali", "year_built": "Anno costr.", "floor": "Piano",
+    "energy_class": "Classe E.", "address": "Indirizzo",
+    "url": "Link", "first_seen": "Visto il",
 })
 
 st.dataframe(
