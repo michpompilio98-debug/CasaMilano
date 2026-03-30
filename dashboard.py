@@ -11,16 +11,16 @@ st.set_page_config(
     layout="wide",
 )
 
+try:
+    sb_secrets = dict(st.secrets.get("supabase", {}))
+    st.write("DEBUG secrets:", list(sb_secrets.keys()))
+except Exception as e:
+    st.write("DEBUG secrets error:", str(e))
+
 init_db()
 
-# ── Debug (temporary) ─────────────────────────────────────────────────────────
 import db as _db
-st.sidebar.caption(f"Backend: {'Supabase' if _db._USE_SUPABASE else 'SQLite'}")
-try:
-    sb_keys = list(st.secrets.get("supabase", {}).keys())
-    st.sidebar.caption(f"Secrets keys: {sb_keys}")
-except Exception as e:
-    st.sidebar.caption(f"Secrets error: {e}")
+st.write("DEBUG backend:", "Supabase" if _db._USE_SUPABASE else "SQLite")
 
 # ── Sidebar filters ──────────────────────────────────────────────────────────
 st.sidebar.title("Filtri")
