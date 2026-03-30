@@ -14,33 +14,38 @@ from pathlib import Path
 
 # ── Detect backend ────────────────────────────────────────────────────────────
 
-def _get_supabase_creds() -> tuple[str, str] | tuple[None, None]:
+_sb = None
+_USE_SUPABASE = False
+_SQLITE_PATH = Path(__file__).parent / "casamilan.db"
+
+
+def _get_client():
+    """Lazy init — called on first DB operation so Streamlit secrets are loaded."""
+    global _sb, _USE_SUPABASE
+
+    if _sb is not None or _USE_SUPABASE is True:
+        return
+
+    url, key = None, None
+
     # 1. Streamlit secrets
     try:
         import streamlit as st
         sb = st.secrets.get("supabase", {})
-        if sb.get("url") and sb.get("key"):
-            return sb["url"], sb["key"]
+        url = sb.get("url")
+        key = sb.get("key")
     except Exception:
         pass
-    # 2. Env vars
-    url = os.environ.get("SUPABASE_URL")
-    key = os.environ.get("SUPABASE_KEY")
+
+    # 2. Env vars fallback
+    if not url:
+        url = os.environ.get("SUPABASE_URL")
+        key = os.environ.get("SUPABASE_KEY")
+
     if url and key:
-        return url, key
-    return None, None
-
-
-_SB_URL, _SB_KEY = _get_supabase_creds()
-_USE_SUPABASE = _SB_URL is not None
-
-if _USE_SUPABASE:
-    from supabase import create_client
-    _sb = create_client(_SB_URL, _SB_KEY)
-    print(f"[db] Using Supabase: {_SB_URL}")
-else:
-    _SQLITE_PATH = Path(__file__).parent / "casamilan.db"
-    print(f"[db] Using SQLite: {_SQLITE_PATH}")
+        from supabase import create_client
+        _sb = create_client(url, key)
+        _USE_SUPABASE = True
 
 
 # ── Schema (SQLite only — Supabase tables created via dashboard or migration) ──
@@ -107,6 +112,7 @@ create table if not exists scrape_log (
 
 
 def init_db():
+    _get_client()
     if _USE_SUPABASE:
         # Create tables via Supabase SQL editor (run once)
         try:
@@ -122,6 +128,7 @@ def init_db():
 # ── Write operations ──────────────────────────────────────────────────────────
 
 def upsert_listing(listing: dict):
+    _get_client()
     now = datetime.utcnow().isoformat()
 
     if _USE_SUPABASE:
@@ -174,6 +181,7 @@ def upsert_listing(listing: dict):
 
 
 def log_scrape(source: str, count: int, status: str):
+    _get_client()
     now = datetime.utcnow().isoformat()
     if _USE_SUPABASE:
         _sb.table("scrape_log").insert({
@@ -198,6 +206,7 @@ def get_listings(
     only_new=False,
     source=None,
 ):
+    _get_client()
     if _USE_SUPABASE:
         q = _sb.table("listings").select("*")
         if zones:
