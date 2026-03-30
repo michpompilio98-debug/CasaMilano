@@ -1,8 +1,7 @@
-beautifulsoup4==4.12.3
-pandas==2.2.3
-streamlit==1.35.0
-plotly==5.22.0
-apscheduler==3.10.4
-requests==2.32.3
-lxml==5.2.2
-supabase==2.28.3
+beautifulsoup4
+streamlit
+plotly
+apscheduler
+requests
+lxml
+supabase
