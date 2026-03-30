@@ -22,6 +22,17 @@ init_db()
 import db as _db
 st.write("DEBUG backend:", "Supabase" if _db._USE_SUPABASE else "SQLite")
 
+# Test direct query
+try:
+    all_rows = _db.get_listings()
+    st.write("DEBUG total listings (no filter):", len(all_rows))
+    if all_rows:
+        from collections import Counter
+        zones_count = Counter(r.get("zone") for r in all_rows)
+        st.write("DEBUG zones:", dict(zones_count))
+except Exception as e:
+    st.write("DEBUG get_listings error:", str(e))
+
 # ── Sidebar filters ──────────────────────────────────────────────────────────
 st.sidebar.title("Filtri")
 
