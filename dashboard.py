@@ -30,6 +30,7 @@ rooms_sel = st.sidebar.selectbox("Locali", list(rooms_options.keys()), index=2)
 rooms_val = rooms_options[rooms_sel]
 
 min_year = st.sidebar.number_input("Anno costruzione minimo", 2000, 2025, 2015)
+include_unknown_year = st.sidebar.checkbox("Includi anno sconosciuto", value=True)
 
 sources = st.sidebar.multiselect(
     "Fonti",
@@ -54,9 +55,13 @@ def load_data(zones, max_ppm, rooms, min_year, only_new):
 
 
 df = load_data(
-    selected_zones, max_ppm,
+    tuple(selected_zones), max_ppm,
     rooms_val, min_year, only_new,
 )
+
+# Filter: anno sconosciuto
+if not df.empty and not include_unknown_year:
+    df = df[df["year_built"].notna()]
 
 # Filter by source
 if not df.empty and sources:
