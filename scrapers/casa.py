@@ -79,7 +79,30 @@ class CasaScraper(BaseScraper):
                 unique.append(l)
 
         print(f"[casa] Total: {len(unique)} unique listings")
+
+        # Fetch year_built from detail pages (in batches to avoid rate limiting)
+        print("[casa] Fetching year_built from detail pages...")
+        for listing in unique:
+            if listing.get("url"):
+                year = self._fetch_year(listing["url"])
+                if year:
+                    listing["year_built"] = year
+            time.sleep(random.uniform(0.8, 1.5))
+
         return unique
+
+    def _fetch_year(self, url: str) -> int | None:
+        try:
+            session = self._get_session()
+            headers = {**HEADERS, "Referer": BASE_URL + "/"}
+            resp = session.get(url, headers=headers, timeout=10)
+            match = re.search(
+                r'"label"\s*:\s*"Anno di costruzione"\s*,\s*"values"\s*:\s*\[(\d{4})\]',
+                resp.text,
+            )
+            return int(match.group(1)) if match else None
+        except Exception:
+            return None
 
     def _extract_listings(self, html: str) -> list[dict]:
         soup = BeautifulSoup(html, "lxml")
